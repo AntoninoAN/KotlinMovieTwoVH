@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+<ImageView
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:id="@+id/iv_item_no_data_icon"
+    android:layout_gravity="center"
+    android:src="@drawable/ic_sentiment_very_dissatisfied_black_24dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_item_no_data_message"
+        android:text="@string/tv_text_filter_did_not_give_any_results"
+        android:layout_gravity="center_horizontal"/>
+</LinearLayout>

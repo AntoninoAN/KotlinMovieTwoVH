@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">MoviesCodeChallenge</string>
+    <string name="item_title_search">Search</string>
+    <string name="tv_text_filter_did_not_give_any_results">Filter did not give any results!</string>
+</resources>
