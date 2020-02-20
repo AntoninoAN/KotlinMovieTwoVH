@@ -2,7 +2,6 @@ package com.example.moviescodechallenge.viewmodel
 
 import android.content.Context
 import android.util.Log
-import androidx.core.util.TimeUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,22 +14,10 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.time.LocalTime
 import java.util.*
-import kotlin.coroutines.CoroutineContext
 
 class MoviesViewModel : ViewModel() {
-    //todo show all movies
-    //todo receives input filter and show movies
-    //todo error message
-    //todo show no data filter input
 
-    //network call ->
-    // checks cache->
-    //create SP and if time not valid
-    // save into room DB -> show data
-    // if time is valid -> show data from cache...
-    //10 minutes timestamp
     private val errorMessage = MutableLiveData<String>()
     private val dataMovieList = MutableLiveData<PokoMovieList>()
 
@@ -44,7 +31,7 @@ class MoviesViewModel : ViewModel() {
             readFromCache()
         } else {
             Log.d(TAG, "Reading from Remote")
-            readFromRemoteAndCacheResponse()
+            readFromRemoteAndSavesResponse()
         }
     }
 
@@ -52,13 +39,14 @@ class MoviesViewModel : ViewModel() {
         val moviesDao = MoviesRoomDB.getDatabase(
             CustomApplication.getApplication()
         ).movieDao()
-        Log.d(TAG, moviesDao.getMoviesCache().size.toString())
-        moviesDao.getMoviesCache()?.let {
-            dataMovieList.value = PokoMovieList(it)
+        viewModelScope.launch {
+            moviesDao.getMoviesCache()?.let {
+                dataMovieList.value = PokoMovieList(it)
+            }
         }
     }
 
-    private fun readFromRemoteAndCacheResponse() {
+    private fun readFromRemoteAndSavesResponse() {
         RemoteNetworkConnection.initRetrofit2().getAllMovies().enqueue(
             object : Callback<PokoMovieList> {
                 override fun onFailure(call: Call<PokoMovieList>, t: Throwable) {
@@ -83,12 +71,12 @@ class MoviesViewModel : ViewModel() {
         )
     }
 
-    fun reUseCachedData(): Boolean {
+    private fun reUseCachedData(): Boolean {
         val sharedPreferences = CustomApplication.getApplication()
             .getSharedPreferences("Network_Calls", 0)
         val previousTime = sharedPreferences
             .getLong("last_network_call", 0)
-        return (Date().time - previousTime) <= 1000 * 60 * 10
+        return (Date().time - previousTime) <= timeStampTest
     }
 
     private fun saveTimestampSP() {
@@ -104,6 +92,8 @@ class MoviesViewModel : ViewModel() {
 
     companion object {
         const val TAG = "MoviesViewModel"
+        const val timeStampCache = 1000 * 60 * 10
+        const val timeStampTest = 1000 * 60 * 2
     }
 }
 

@@ -50,9 +50,10 @@ dependencies {
     //Room
     implementation "androidx.room:room-runtime:2.2.3"
     kapt "androidx.room:room-compiler:2.2.3"
+    implementation 'androidx.room:room-ktx:2.2.3'
     //Logging interceptor
     implementation 'com.squareup.okhttp3:logging-interceptor:3.14.6'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha03'
-    implementation 'androidx.room:room-ktx:2.2.3'
+    //Swipe to refresh
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 }

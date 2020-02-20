@@ -9,7 +9,7 @@ import androidx.room.Query
 @Dao
 interface MoviesDao {
     @Query("SELECT * FROM movies_table")
-    fun getMoviesCache() : List<Data>
+    suspend fun getMoviesCache() : List<Data>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun saveCacheData(data: List<Data>)
